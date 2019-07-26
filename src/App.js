@@ -11,12 +11,12 @@ class App extends Component {
 
   componentDidMount(){
     console.log('component has mounted')
-    /*
+    
     this.interval = setInterval(() => {
       this._getOrders()
-    }, 1000);
-    */
-   this._getOrders()
+    }, 5000);
+    
+  //  this._getOrders()
   }
 
   componentWillUnmount(){
@@ -46,7 +46,9 @@ class App extends Component {
   }
 
   _callApi = () => {
-    axios.get('http://127.0.0.1:8000/order/?format=json')
+    // axios.get('http://127.0.0.1:8000/order/?format=json')
+    // axios.get('http://coffee-remocon-dev2.ap-northeast-2.elasticbeanstalk.com/order/')
+    axios.get('http://ec2-13-125-149-154.ap-northeast-2.compute.amazonaws.com:8000/order/')
     .then(result => {
       this._giveOrderId(result)
       console.log('called Api')
@@ -59,8 +61,9 @@ class App extends Component {
   }
 
   _giveOrderId = result => {
-    for(let i = 0; i < result.data.length; i++){
-      result.data[i].id = i;
+    const orders = result.data.reverse();
+    for(let i = 0; i < orders.length; i++){
+      orders[i].id = i;
     }
   }
   

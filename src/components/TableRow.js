@@ -58,10 +58,10 @@ class TableRow extends Component {
     // console.log(this.props);
     return (
         <tr className="order" id={this.props.number + 1} onClick={this._updateUI}>
-            <td className="number"> {this.props.number + 1} </td>
+            {/* <td className="number"> {this.props.number + 1} </td> */}
+            <td className="time"> {this._parsedDate(this.props.time)} </td>
             {this._renderMenuQuantity()}
             <td className="price"> {this.props.price} 원 </td>
-            <td className="time"> {this._parsedDate(this.props.time)} </td>
             <td className="status">	&#10004;</td>
         </tr>
     );
