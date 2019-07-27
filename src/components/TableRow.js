@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import MenuQuantity from './MenuQuantity';
+import axios from 'axios';
 
 class TableRow extends Component {
+
+  state = [];
 
   _renderMenuQuantity = () => {
     let order = this.props.order
@@ -13,7 +16,6 @@ class TableRow extends Component {
       number = {key}
       />
     
-    
   }
 
   _updateUI = (e) => {
@@ -22,7 +24,24 @@ class TableRow extends Component {
     if (element.classList[0] === "order") {
       element.classList.toggle('done');
     }
+
+    this.setState(this.props, () => console.log(this.state))
+    this.setState({status:"c"})
     console.log(e.target.parentNode.id);
+
+    this._patchToServer(e.target.parentNode.id)
+  }
+
+  _patchToServer = (id) => {
+    axios.patch(`http://coffee-remocon-dev2.ap-northeast-2.elasticbeanstalk.com/order/${id}/`,
+    {status: "c"})
+    .then(result => {
+      console.log(result)
+    })
+    .catch(error => {
+      console.log(error)
+    }
+    )
   }
 
   _parsedDate = (time) => {
@@ -57,12 +76,12 @@ class TableRow extends Component {
   render() {
     // console.log(this.props);
     return (
-        <tr className="order" id={this.props.number + 1} onClick={this._updateUI}>
-            {/* <td className="number"> {this.props.number + 1} </td> */}
-            <td className="time"> {this._parsedDate(this.props.time)} </td>
+        <tr className="order" id={this.props.number} onClick={this._updateUI}>
+            <td className="number"> {this.props.number} </td>
             {this._renderMenuQuantity()}
             <td className="price"> {this.props.price} 원 </td>
-            <td className="status">	&#10004;</td>
+            <td className="time"> {this._parsedDate(this.props.time)} </td>
+            <td className="status">	{this.state.status? this.state.status : this.props.status} </td>
         </tr>
     );
   }
